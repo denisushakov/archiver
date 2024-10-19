@@ -9,6 +9,7 @@ import (
 
 	"github.com/denisushakov/archiver/lib/compression"
 	"github.com/denisushakov/archiver/lib/compression/vlc"
+	"github.com/denisushakov/archiver/lib/compression/vlc/table/shannon_fano"
 	"github.com/spf13/cobra"
 )
 
@@ -33,7 +34,9 @@ func pack(cmd *cobra.Command, args []string) {
 
 	switch method {
 	case "vlc":
-		encoder = vlc.New()
+		encoder = vlc.New(shannon_fano.NewGenerator())
+	default:
+		cmd.PrintErr("unknown method")
 	}
 
 	filePath := args[0]
